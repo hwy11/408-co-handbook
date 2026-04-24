@@ -235,6 +235,21 @@
 .lesson-kicker{color:#1f6f61;font-family:var(--font-mono);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 .lesson-title{margin:10px 0 16px;color:var(--ink);font-size:46px;line-height:1.08;letter-spacing:0}
 .lesson-thesis{margin:0;color:#3b332b;font-size:18px;line-height:1.9}
+.coach-card{
+  margin:24px 0;
+  padding:22px 24px;
+  border:2px solid #17140f;
+  background:#fff9ea;
+  box-shadow:8px 8px 0 rgba(31,111,97,.15);
+}
+.coach-card p{
+  margin:0 0 12px;
+  color:#33291f;
+  font-size:17px;
+  line-height:1.95;
+}
+.coach-card p:last-child{margin-bottom:0}
+.coach-card strong{color:#1f6f61;font-weight:900}
 .anchor-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 30px}
 .anchor-map article{padding:18px;border:1px solid var(--line);background:#fffdf8;border-top:5px solid #1f6f61}
 .anchor-map b{color:var(--ink);font-size:15px}

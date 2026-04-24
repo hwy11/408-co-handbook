@@ -254,6 +254,21 @@
   line-height:1.9;
 }
 .lesson-thesis strong,.anchor-map strong,.exam-deep strong{color:#a53f24;font-weight:900}
+.coach-card{
+  margin:24px 0;
+  padding:22px 24px;
+  border:2px solid #17140f;
+  background:#fff9ea;
+  box-shadow:8px 8px 0 rgba(165,63,36,.15);
+}
+.coach-card p{
+  margin:0 0 12px;
+  color:#33291f;
+  font-size:17px;
+  line-height:1.95;
+}
+.coach-card p:last-child{margin-bottom:0}
+.coach-card strong{color:#a53f24;font-weight:900}
 .anchor-map{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
