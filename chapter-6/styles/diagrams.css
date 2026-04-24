@@ -1,0 +1,119 @@
+/* =================== 图解专用 =================== */
+
+.fig{
+  border:1px solid var(--line); border-radius:var(--radius-lg); background:#fff;
+  padding:22px; margin:20px 0;
+}
+.fig .fig-title{
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:700; color:var(--ink); margin-bottom:4px;
+}
+.fig .fig-title .fig-idx{
+  font-family:var(--font-mono); font-size:11px; color:var(--ink-3);
+  padding:2px 7px; border:1px solid var(--line); border-radius:4px; font-weight:600;
+}
+.fig .fig-desc{ font-size:12.5px; color:var(--ink-3); margin-bottom:14px; }
+.fig svg{ display:block; width:100%; height:auto; }
+
+.fig-canvas{
+  background:#FAFAFA; border:1px dashed var(--line-2); border-radius:var(--radius);
+  padding:16px; margin:10px 0;
+}
+
+/* SVG 通用 token */
+.stroke-line{ stroke:#52525B; stroke-width:1.5; fill:none; }
+.stroke-line-thin{ stroke:#A1A1AA; stroke-width:1; fill:none; }
+.stroke-ink{ stroke:#18181B; stroke-width:2; fill:none; }
+.stroke-brand{ stroke:#4F46E5; stroke-width:2; fill:none; }
+.stroke-err{ stroke:#DC2626; stroke-width:2; fill:none; }
+.stroke-ok{ stroke:#059669; stroke-width:2; fill:none; }
+.stroke-warn{ stroke:#D97706; stroke-width:2; fill:none; }
+
+.fill-ink{ fill:#18181B; }
+.fill-ink-2{ fill:#3F3F46; }
+.fill-ink-3{ fill:#71717A; }
+.fill-ink-4{ fill:#A1A1AA; }
+.fill-bg{ fill:#FFFFFF; }
+.fill-sunken{ fill:#F4F4F2; }
+.fill-brand{ fill:#4F46E5; }
+.fill-brand-soft{ fill:#EEF2FF; }
+.fill-ok{ fill:#059669; }
+.fill-ok-soft{ fill:#ECFDF5; }
+.fill-warn{ fill:#D97706; }
+.fill-warn-soft{ fill:#FFFBEB; }
+.fill-err{ fill:#DC2626; }
+.fill-err-soft{ fill:#FEF2F2; }
+.fill-info{ fill:#2563EB; }
+.fill-info-soft{ fill:#EFF6FF; }
+.fill-violet{ fill:#7C3AED; }
+.fill-violet-soft{ fill:#F5F3FF; }
+
+text{ font-family:"Inter","Noto Sans SC",sans-serif; }
+.t-mono{ font-family:"JetBrains Mono", monospace; }
+.t-title{ font-size:13px; font-weight:700; fill:#18181B; }
+.t-label{ font-size:11.5px; font-weight:500; fill:#3F3F46; }
+.t-small{ font-size:10.5px; fill:#71717A; }
+.t-tiny{ font-size:9.5px; fill:#71717A; }
+.t-white{ fill:#FFFFFF; }
+.t-reg{ font-family:"JetBrains Mono"; font-size:12px; font-weight:700; fill:#FACC15; }
+
+/* 可点击 / 动态元素 */
+.hot{ cursor:pointer; transition:opacity .15s; }
+.hot:hover{ opacity:.85; }
+.dim{ opacity:.18; transition:opacity .3s; }
+.flash{ transition:fill .3s, stroke .3s; }
+
+/* 数据流箭头动画 */
+@keyframes dashflow{ to { stroke-dashoffset:-20; } }
+.dataflow{
+  stroke:#4F46E5; stroke-width:2.5; fill:none;
+  stroke-dasharray: 6 4;
+  animation: dashflow 1s linear infinite;
+}
+.dataflow.ok{ stroke:#059669; }
+.dataflow.warn{ stroke:#D97706; }
+.dataflow.err{ stroke:#DC2626; }
+.dataflow.off{ animation:none; stroke:#D6D3D1; stroke-dasharray:3 3; }
+
+/* 流水线时空格子 */
+.pipe-cell{ stroke:#fff; stroke-width:1; }
+.pipe-IF{ fill:#DBEAFE; }
+.pipe-ID{ fill:#FEF3C7; }
+.pipe-EX{ fill:#D1FAE5; }
+.pipe-MEM{ fill:#FCE7F3; }
+.pipe-WB{ fill:#E0E7FF; }
+.pipe-stall{ fill:#FEE2E2; }
+.pipe-bubble{ fill:#F4F4F2; stroke:#D6D3D1; stroke-dasharray:3 2; }
+.pipe-text{ font-family:"JetBrains Mono"; font-size:11px; font-weight:700; fill:#18181B; text-anchor:middle; }
+.pipe-text-dim{ fill:#71717A; }
+.pipe-hdr{ font-family:"JetBrains Mono"; font-size:11px; font-weight:700; fill:#52525B; }
+
+/* 总线 */
+.bus{ fill:#F4F4F2; stroke:#A1A1AA; stroke-width:1.5; }
+.bus-label{ font-family:"JetBrains Mono"; font-size:11px; font-weight:700; fill:#52525B; }
+
+/* 寄存器外观 */
+.reg-box{ fill:#FFFBEB; stroke:#F59E0B; stroke-width:1.5; }
+.reg-box.active{ fill:#FEF3C7; stroke:#D97706; stroke-width:2; }
+.alu-shape{ fill:#EEF2FF; stroke:#4F46E5; stroke-width:1.5; }
+.mem-box{ fill:#F5F3FF; stroke:#7C3AED; stroke-width:1.5; }
+.mux-shape{ fill:#ECFDF5; stroke:#059669; stroke-width:1.5; }
+.cu-box{ fill:#FEF2F2; stroke:#DC2626; stroke-width:1.5; }
+
+.reg-label{
+  font-family:"JetBrains Mono"; font-size:12px; font-weight:700; fill:#18181B;
+  text-anchor:middle;
+}
+
+/* 图例 */
+.legend{
+  display:flex; gap:14px; flex-wrap:wrap; padding:10px 14px;
+  background:var(--bg-sunken); border:1px solid var(--line);
+  border-radius:6px; font-size:12px; color:var(--ink-2);
+}
+.legend .lg{ display:inline-flex; align-items:center; gap:6px; }
+.legend .lg-dot{ width:12px; height:12px; border-radius:3px; display:inline-block; border:1px solid rgba(0,0,0,.1); }
+
+/* 时序图 */
+.clk-line{ stroke:#4F46E5; stroke-width:1.8; fill:none; }
+.clk-edge{ stroke:#4F46E5; stroke-width:1; stroke-dasharray:2 3; }

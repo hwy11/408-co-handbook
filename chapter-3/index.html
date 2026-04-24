@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>408 · 存储系统 可视化手册</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/diagrams.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="brand-mark">MEM</div>
+        <div class="brand-text">
+          <div class="brand-title">408 · 存储系统</div>
+          <div class="brand-sub">可视化手册 · 第 3 章</div>
+        </div>
+      </div>
+    </div>
+    <nav class="toc" id="toc"></nav>
+    <div class="sidebar-foot"><span class="kbd">←</span><span class="kbd">→</span><span class="hint">方向键切换小节</span></div>
+  </aside>
+
+  <main class="main" id="main">
+    <header class="topbar">
+      <div class="crumb" id="crumb">第 3 章 · 存储系统</div>
+      <div class="topbar-actions">
+        <a class="btn-ghost" href="/" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">返回首页</a>
+        <button class="btn-ghost" id="prevBtn">← 上一节</button>
+        <button class="btn-ghost" id="nextBtn">下一节 →</button>
+      </div>
+    </header>
+    <article class="content" id="content"></article>
+    <footer class="pager">
+      <button class="pager-btn" id="prevBtn2"><span class="pager-label">上一节</span><span class="pager-title" id="prevTitle">-</span></button>
+      <button class="pager-btn right" id="nextBtn2"><span class="pager-label">下一节</span><span class="pager-title" id="nextTitle">-</span></button>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
