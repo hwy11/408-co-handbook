@@ -1,18 +1,18 @@
 /* =================== 设计系统 =================== */
 :root{
-  --bg: #FAFAF9;
-  --bg-elev: #FFFFFF;
-  --bg-sunken: #F4F4F2;
-  --ink: #18181B;
+  --bg: #F7F3EA;
+  --bg-elev: #FFFDF8;
+  --bg-sunken: #EEE6D8;
+  --ink: #18140F;
   --ink-2: #3F3F46;
   --ink-3: #71717A;
   --ink-4: #A1A1AA;
-  --line: #E7E5E4;
-  --line-2: #D6D3D1;
+  --line: #DED2BF;
+  --line-2: #CDBDA5;
 
   --accent: #0A0A0A;            /* 主强调：近黑 */
-  --brand: #4F46E5;             /* 品牌靛蓝 */
-  --brand-soft: #EEF2FF;
+  --brand: #1F6F61;
+  --brand-soft: #E4F3EE;
   --ok: #059669;
   --ok-soft: #ECFDF5;
   --warn: #D97706;
@@ -114,7 +114,7 @@ button{font-family:inherit}
 .btn-ghost:hover{ background:var(--bg-sunken); border-color:var(--line-2); }
 
 .content{
-  flex:1; max-width: var(--content-max); width:100%;
+  flex:1; max-width: 1040px; width:100%;
   margin:0 auto; padding:48px 40px 80px;
 }
 

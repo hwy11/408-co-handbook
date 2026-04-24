@@ -88,10 +88,159 @@ const CHAPTER = {
   ]
 };
 
+const RICH = {
+  "4-1": `
+    <div class="card"><h3 class="h3" style="margin-top:0">先建立直觉</h3><p>指令系统是软件和硬件之间的合同。编译器最后生成的机器指令必须符合这个合同，CPU 也必须按这个合同解释每一串二进制。你写的 C 代码可以很抽象，但落到机器里，最终都要变成“取哪个数、做什么操作、结果放哪儿、下一条去哪儿”。</p><p>这一章如果只背“操作码、地址码”，会很干。真正的脉络是：指令格式决定一条指令能表达多少信息，寻址方式决定操作数怎么找，机器级代码说明高级语言结构如何被拆成比较、跳转、访存和调用。</p></div>
+    <h2 class="h2">ISA 到底规定什么</h2><p>ISA 规定的是程序员或编译器能看见的机器边界，包括指令格式、寄存器集合、数据类型、寻址方式、异常中断机制、内存模型等。它不关心 CPU 内部具体是五级流水还是十级流水，也不关心 Cache 怎么做。只要 ISA 不变，同一个机器码理论上就能在兼容处理器上运行。</p><p>这个区分很重要。比如 x86 处理器内部可能把复杂指令拆成微操作执行，但外部软件看到的仍然是 x86 指令。微操作是实现细节，机器指令才是 ISA 层的东西。</p>
+    <h2 class="h2">指令格式为什么要纠结位数</h2><p>一条指令长度有限，操作码多占一位，地址码就少一位；地址码多一个字段，操作码或立即数空间就被压缩。定长指令译码简单、取指规整，适合流水线；变长指令编码紧凑，代码密度高，但取指和译码复杂。</p><p>操作码指出操作类型，地址码指出操作数来源或结果去向。三地址指令表达能力强，比如 A = B + C 一条就能写清楚，但指令长；二地址指令常常让一个操作数兼作结果；一地址指令通常依赖累加器；零地址指令常见于栈机器。地址数减少，指令变短，但可能需要更多条指令完成同一件事。</p>
+    <h2 class="h2">扩展操作码怎么想</h2><p>扩展操作码不是死公式，而是在“短指令地址字段没用满”时，把某些编码模式留出来继续扩展。比如某类三地址指令占用一部分操作码，剩下某个操作码模式不再表示三地址操作，而是提示 CPU：后面的某些地址字段也参与操作码编码，从而形成二地址或一地址指令。</p><p>做题时不要平均分配位数。正确思路是从最长地址数的指令开始分配，保留若干未用编码作为下一层扩展入口，再计算下一类指令能容纳多少种操作。</p>
+  `,
+  "4-2": `
+    <div class="card"><h3 class="h3" style="margin-top:0">先建立直觉</h3><p>寻址方式解决一句话：指令里写的那个字段，到底是数本身、地址、地址的地址，还是一个要参与计算的偏移量。很多同学卡在“形式地址”和“有效地址”，其实形式地址就是指令中看见的地址字段，有效地址是按规则算出来真正去访问操作数的位置。</p></div>
+    <h2 class="h2">指令寻址和数据寻址</h2><p>指令寻址决定下一条指令在哪。顺序执行时，PC 自动变成下一条指令地址；遇到跳转、调用、返回时，PC 被改写。数据寻址决定本条指令的操作数在哪，它可能在指令里、寄存器里、内存里，或者要经过一次地址计算才能找到。</p>
+    <h2 class="h2">常见数据寻址方式</h2><p>立即寻址最快，因为操作数就在指令里，不需要再访问内存取操作数，但它能表示的数受字段长度限制。直接寻址中，地址字段就是有效地址，直观但地址范围受字段长度限制。间接寻址中，地址字段指向一个内存单元，这个单元里存放有效地址，灵活但至少多一次访存。</p><p>寄存器寻址直接从寄存器取操作数，速度快、字段短；寄存器间接寻址是把寄存器内容当作内存地址。变址寻址常用于数组，形式地址加变址寄存器得到有效地址；基址寻址常用于程序重定位，基址寄存器给出一段区域起点，形式地址给出段内偏移。相对寻址用 PC 加偏移形成目标地址，特别适合条件转移和循环。</p>
+    <h2 class="h2">考试怎么判断访存次数</h2><p>立即寻址通常不为取操作数额外访存；寄存器寻址也不访问主存；直接寻址要访问一次主存取操作数；间接寻址要先访问一次主存取有效地址，再访问一次主存取操作数。这里还没算取指本身。题目如果问“执行阶段访存次数”，就不要把取指混进去；如果问“完成该指令总访存次数”，通常要加上取指。</p>
+  `,
+  "4-3": `
+    <div class="card"><h3 class="h3" style="margin-top:0">先建立直觉</h3><p>高级语言里的 if、for、函数调用，在机器眼里都不存在。机器只会做计算、访存、比较、跳转。所谓机器级代码，就是把人类喜欢的结构化语法拆成 CPU 能执行的一小步一小步。</p></div>
+    <h2 class="h2">选择语句如何落地</h2><p>if-else 的机器级实现通常是先比较，再根据条件跳转。比如 if (x == 0) A else B，机器可能先比较 x 和 0，如果不相等就跳到 B；执行完 A 后还要无条件跳过 B，最后两条路径在同一个位置汇合。短路求值也是通过跳转实现的，&& 遇到前一个条件为假就不再算后一个，|| 遇到前一个条件为真就不再算后一个。</p>
+    <h2 class="h2">循环语句如何落地</h2><p>循环本质是带条件的回跳。while 通常先判断条件，不满足就跳出，满足就执行循环体，再跳回条件判断处。do-while 先执行一次循环体，再判断是否回跳。for 只是把初始化、条件、更新写得更集中，机器级结构仍然是初始化、判断、循环体、更新、回跳。</p>
+    <h2 class="h2">过程调用为什么离不开栈</h2><p>函数调用要解决四件事：参数怎么传，返回地址放哪，局部变量放哪，调用前后寄存器怎么保持。返回地址通常由 call 类指令保存，局部变量和临时数据常放在栈帧中。每调用一次函数，就形成一次新的活动记录；递归之所以能成立，是因为每一层递归都有自己的参数、局部变量和返回位置。</p><p>寄存器保存约定也很关键。调用者保存寄存器表示调用前如果还想用，就由调用者自己保存；被调用者保存寄存器表示函数内部用了这些寄存器，就必须在返回前恢复。这个约定让不同函数能独立编译又能协同运行。</p>
+  `,
+  "4-4": `
+    <div class="card"><h3 class="h3" style="margin-top:0">先建立直觉</h3><p>CISC 和 RISC 不是“复杂一定落后、精简一定先进”这么粗糙。它们代表的是两种分配复杂性的思路：CISC 倾向于让一条指令做更多事，硬件译码和控制更复杂；RISC 倾向于让每条指令简单规整，把更多组合工作交给编译器。</p></div>
+    <h2 class="h2">CISC 的特点</h2><p>CISC 指令数量多，长度和格式可能不固定，寻址方式丰富，一条指令可能包含访存和运算。优点是代码密度高，某些复杂操作可以用较少指令表达；缺点是译码复杂、控制逻辑复杂、不同指令执行时间差异大，对流水线不友好。</p>
+    <h2 class="h2">RISC 的特点</h2><p>RISC 通常指令长度固定、格式少、寻址方式少、通用寄存器多，强调 Load/Store 结构，也就是只有 load/store 访问内存，算术逻辑运算主要在寄存器之间进行。这样做的好处是译码简单、控制规整、流水线容易设计，编译器也更容易调度指令。</p>
+    <h2 class="h2">现代处理器里的真实关系</h2><p>现代处理器并不是教科书式二分。很多 CISC 架构处理器内部会把复杂指令翻译成更简单的微操作，再进入类似 RISC 的执行核心；RISC 架构也会加入越来越多扩展指令提高性能。408 要求你掌握的是设计取舍，不是把某一派神化。</p>
+  `,
+  "4-5": `
+    <div class="card"><h3 class="h3" style="margin-top:0">本章真正要带走的东西</h3><p>第四章是第五章的前置语言。第四章问“CPU 要看懂什么样的指令”，第五章问“CPU 怎么把这些指令跑起来”。如果把指令系统当作合同，那么数据通路、控制器、流水线都是履行合同的工程实现。</p><p>复习时按三个层次走：第一层是编码，理解操作码、地址码、指令长度；第二层是定位，理解各种寻址方式如何得到操作数；第三层是程序结构，理解选择、循环、函数调用如何变成比较、跳转、栈帧和寄存器约定。</p></div>
+  `,
+  "4-6": `
+    <div class="card"><h3 class="h3" style="margin-top:0">最容易混的几组概念</h3><p>ISA 和微体系结构不能混。ISA 是软件看见的机器规范，微体系结构是硬件内部怎么实现。指令和微指令也不能混，机器指令是程序执行的对象，微指令是微程序控制器内部产生控制信号的手段。</p><p>形式地址、有效地址、物理地址也不能混。形式地址是指令字段里的值，有效地址是寻址方式算出来的操作数地址，物理地址则可能还要经过虚拟存储器地址变换。第四章多数题停在有效地址，第三章虚存题才继续讨论物理地址。</p></div>
+    <h2 class="h2">答题自检</h2><p>看到一条指令，先问操作码占几位、地址码有几个；看到寻址方式，先问操作数字段是数还是地址；看到机器级代码，先画控制流；看到函数调用，先画栈帧。这四个动作比死背定义更有用。</p>
+  `
+};
+
+const DEEP = {
+  "4-1": {
+    tag: "ISA Contract",
+    thesis: "指令系统不是“CPU 支持哪些命令”的清单，而是软件和硬件之间的合同：编译器按它生成机器码，CPU 按它解释机器码。",
+    visual: "format",
+    points: [
+      ["ISA 和实现不是一回事", "ISA 规定软件能看见什么，比如指令格式、寄存器、寻址方式；流水线几级、Cache 多大、内部是否拆微操作，是实现问题。"],
+      ["指令格式的矛盾", "一条指令位数有限，操作码多一点，地址码就少一点；地址字段多一点，指令就可能变长。格式设计本质是编码空间分配。"],
+      ["扩展操作码的直觉", "先用短操作码表示地址数多的指令，再把某些保留编码继续扩展成地址数少但操作码更长的指令。"]
+    ],
+    examples: [
+      ["例题 1：指令长度和机器字长一定相等吗？", "不一定。指令长度是指令编码占多少位，机器字长是 CPU 一次能处理的二进制位数。二者可以相等，也可以不等。", "不要把“方便取指”理解成硬性规定。"],
+      ["例题 2：二地址指令为什么可能破坏源操作数？", "二地址指令常把其中一个地址既当源操作数又当结果位置，比如 A = A + B。结果写回 A，A 原来的值就被覆盖。", "看到二地址，要立刻想到一个操作数可能兼作目的操作数。"],
+      ["例题 3：扩展操作码题先算什么？", "先从地址数最多的指令开始分配编码，留下不用的操作码模式作为扩展入口，再计算下一类指令。", "不要把所有操作码位平均分给各类指令。"]
+    ]
+  },
+  "4-2": {
+    tag: "Addressing",
+    thesis: "寻址方式只问一件事：指令里的地址字段到底怎么变成操作数。你分清“形式地址、有效地址、操作数”，这节就通了。",
+    visual: "addressing",
+    points: [
+      ["立即数是数本身", "立即寻址里，字段就是操作数，不需要再拿它去内存找。速度快，但能表示的范围受字段长度限制。"],
+      ["直接和间接差一层", "直接寻址的字段就是有效地址；间接寻址的字段指向一个内存单元，那个单元里才放有效地址。"],
+      ["变址、基址、相对别混", "变址常服务数组，基址常服务重定位，相对寻址常服务转移。它们都是“某个基准 + 偏移”，但使用目的不同。"]
+    ],
+    examples: [
+      ["例题 1：立即寻址需要访问内存取操作数吗？", "不需要。操作数已经写在指令里。执行阶段不用再访存取操作数。", "别把取指阶段和执行阶段访存混在一起。"],
+      ["例题 2：间接寻址为什么慢？", "因为要先访存取有效地址，再按有效地址访存取操作数。相比直接寻址，多了一次访存。", "题目问总访存次数时，可能还要加取指。"],
+      ["例题 3：相对寻址为什么适合跳转？", "目标地址 = PC + 偏移。代码整体搬家时，当前位置和目标位置一起移动，偏移不变，所以适合分支跳转。", "PC 指向当前还是下一条，要按题目说明。"]
+    ]
+  },
+  "4-3": {
+    tag: "Machine Code",
+    thesis: "机器级代码不是另一套玄学，它只是把 if、for、函数调用拆成比较、跳转、栈帧和寄存器约定。",
+    visual: "control",
+    points: [
+      ["选择语句靠条件跳转", "if-else 不是机器天然认识的结构，它会变成比较、条件跳转、无条件跳转和汇合点。"],
+      ["循环靠回跳", "while、for、do-while 都能还原成标签、条件判断和跳转。区别只是先判断还是先执行。"],
+      ["函数调用靠栈帧", "参数、返回地址、局部变量、保存寄存器都需要位置。栈帧让每次调用都有自己的现场，递归才成立。"]
+    ],
+    examples: [
+      ["例题 1：if-else 机器级结构是什么？", "先比较条件，不满足就跳到 else；then 执行完再跳过 else；最后两条路径汇合。", "不要把高级语言块结构当成机器真实存在的东西。"],
+      ["例题 2：递归为什么不会互相覆盖局部变量？", "每次调用都会建立新的栈帧，局部变量属于当前栈帧，不同调用层次互不覆盖。", "递归题先画栈帧，比盯代码靠谱。"],
+      ["例题 3：调用者保存和被调用者保存怎么理解？", "调用者保存：我调用别人前，自己保存还要用的寄存器。被调用者保存：函数内部用了约定要保护的寄存器，返回前恢复。", "这是 ABI 约定，不是硬件天然规定。"]
+    ]
+  },
+  "4-4": {
+    tag: "CISC / RISC",
+    thesis: "CISC 和 RISC 的区别不是谁高级，而是复杂性放在哪里：放在硬件指令里，还是放在编译器和规整指令组合里。",
+    visual: "risc",
+    points: [
+      ["CISC 像一把复杂瑞士刀", "指令多、格式多、寻址方式多，一条指令可能做很多事。代码密度好，但译码和流水线复杂。"],
+      ["RISC 像一组标准工具", "指令少、长度固定、格式规整，强调 Load/Store。硬件控制简单，流水线更容易。"],
+      ["现代处理器不是纯二分", "很多 CISC 处理器内部会把复杂指令拆成微操作执行；很多 RISC 也会加入扩展指令。408 考的是取舍。"]
+    ],
+    examples: [
+      ["例题 1：RISC 是不是功能少？", "不是。RISC 是单条指令语义简单，不代表整台机器功能少。复杂功能可以由多条简单指令组合。", "别把精简理解成残缺。"],
+      ["例题 2：Load/Store 结构什么意思？", "只有 load/store 指令访问内存，算术逻辑运算主要在寄存器之间进行。", "看到 RISC，就要想到访存和运算分离。"],
+      ["例题 3：为什么 RISC 更适合流水线？", "指令长度和格式规整，执行步骤更统一，控制信号更容易安排，流水线冲突更少。", "不是因为 RISC 天生更快，而是更容易做高效实现。"]
+    ]
+  },
+  "4-5": {
+    tag: "Chapter Map",
+    thesis: "第四章一句话：指令格式决定机器能表达什么，寻址方式决定数据怎么找，机器级代码决定高级语言怎么落地。",
+    visual: "map",
+    points: [
+      ["先看编码", "操作码、地址码、指令长度决定一条机器指令能放下多少信息。"],
+      ["再看定位", "寻址方式把形式地址变成有效地址或操作数。"],
+      ["最后看程序结构", "选择、循环、调用都能还原成跳转和栈帧。"]
+    ],
+    examples: [
+      ["综合例题 1：看到指令格式题先问什么？", "先问总长度、操作码位数、地址码个数和每个地址码位数，再判断能表示多少种操作或地址范围。", "不要直接背公式，先看字段怎么切。"],
+      ["综合例题 2：第四章和第五章什么关系？", "第四章规定 CPU 要执行什么， 第五章讲 CPU 怎么执行它。指令系统是合同，数据通路和控制器是履行合同的机器。", "别把 ISA 指令和微操作、微指令混在一起。"]
+    ]
+  },
+  "4-6": {
+    tag: "Confusion Killer",
+    thesis: "这一节就是把层次切开：ISA、机器码、汇编、微操作、数据通路，不在同一层就别混着答。",
+    visual: "confuse",
+    points: [
+      ["ISA vs 微体系结构", "ISA 是软件可见规范，微体系结构是硬件内部实现。"],
+      ["机器指令 vs 微指令", "机器指令是程序执行的指令，微指令是微程序控制器内部控制信号的编码。"],
+      ["形式地址 vs 有效地址", "形式地址是指令字段，按寻址方式算出来的才是有效地址。"]
+    ],
+    examples: [
+      ["辨析例题 1：Cache 大小属于 ISA 吗？", "不属于。Cache 是微体系结构实现细节，正常程序不能依赖某个固定 Cache 大小才能运行。", "软件可见才更接近 ISA。"],
+      ["辨析例题 2：汇编指令等于机器指令吗？", "汇编是机器指令的人类可读写法，最终要汇编成二进制机器码。", "助记符不是 CPU 直接执行的文字。"],
+      ["辨析例题 3：微指令是第四章的指令吗？", "不是。第四章说的是 ISA 层机器指令；微指令属于控制器实现，通常放到第五章微程序控制器里理解。", "两个都叫指令，但层次不同。"]
+    ]
+  }
+};
+
+function renderDeep(sec) {
+  const deep = DEEP[sec.id];
+  if (!deep) return "";
+  return `
+    <section class="lesson-hero">
+      <div><div class="lesson-kicker">${deep.tag}</div><h1 class="lesson-title">${sec.num} ${sec.title}</h1><p class="lesson-thesis">${deep.thesis}</p></div>
+      ${renderVisual(deep.visual)}
+    </section>
+    <section class="anchor-map">${deep.points.map(([title, body]) => `<article><b>${title}</b><p>${body}</p></article>`).join("")}</section>
+    ${RICH[sec.id] || ""}
+    <section class="example-zone"><div class="zone-head"><span>Exam Drill</span><h2>用例题把概念钉住</h2></div>${deep.examples.map((ex, i) => `<article class="exam-deep"><div class="exam-num">${String(i + 1).padStart(2, "0")}</div><div><h3>${ex[0]}</h3><p class="question">${ex[1]}</p><p class="answer">${ex[2]}</p><p class="trap"><strong>易错提醒：</strong>${ex[3]}</p></div></article>`).join("")}</section>
+  `;
+}
+
+function renderVisual(type) {
+  if (type === "format") return `<div class="isa-visual"><div class="instruction-word"><span>OP</span><span>ADDR1</span><span>ADDR2</span></div><p>位数有限，所以操作码和地址码一直在抢空间。</p></div>`;
+  if (type === "addressing") return `<div class="isa-visual"><div class="addr-path"><b>形式地址 A</b><i>寻址方式加工</i><b>有效地址 EA / 操作数</b></div><p>寻址方式就是把字段解释成操作数位置的规则。</p></div>`;
+  if (type === "control") return `<div class="isa-visual flow"><b>cmp</b><span>条件跳转</span><b>then / else</b><span>汇合</span><b>continue</b></div>`;
+  if (type === "risc") return `<div class="isa-visual compare-isa"><div><b>CISC</b><span>复杂指令</span><span>多格式</span></div><div><b>RISC</b><span>规整指令</span><span>Load/Store</span></div></div>`;
+  if (type === "map") return `<div class="isa-visual flow"><b>格式</b><span>→</span><b>寻址</b><span>→</span><b>机器级代码</b></div>`;
+  return `<div class="isa-visual compare-isa"><div><b>ISA 层</b><span>机器指令</span></div><div><b>实现层</b><span>微操作 / 数据通路</span></div></div>`;
+}
+
 function renderTOC(){const toc=document.getElementById("toc");toc.innerHTML=`<div class="toc-group"><div class="toc-group-title">第 ${CHAPTER.num} 章 · ${CHAPTER.title}</div>${CHAPTER.sections.map(s=>`<div class="toc-item" data-id="${s.id}"><span class="toc-num">${s.num}</span><span>${s.title}</span></div>`).join("")}</div>`;toc.querySelectorAll(".toc-item").forEach(el=>el.addEventListener("click",()=>goTo(el.dataset.id)));}
 function currentId(){const hash=location.hash.replace("#","");return CHAPTER.sections.some(s=>s.id===hash)?hash:(localStorage.getItem(`chapter-${CHAPTER.num}-section`)||CHAPTER.sections[0].id);}
 function goTo(id){location.hash=id;localStorage.setItem(`chapter-${CHAPTER.num}-section`,id);render();window.scrollTo({top:0,behavior:"instant"});}
-function renderSection(sec){return `<h1 class="sec-title">${sec.num} ${sec.title}</h1><div class="sec-meta"><b>第 ${CHAPTER.num} 章</b> / ${CHAPTER.title}</div><p class="lead">${sec.lead}</p><div class="callout info"><b>本节目录</b><ul>${sec.subs.map(sub=>`<li>${sub}</li>`).join("")}</ul></div>${sec.blocks.map(([title,body])=>`<h2 class="h2">${title}</h2><p>${body}</p>`).join("")}<div class="card"><h3 class="h3" style="margin-top:0">408 抓分点</h3><ul>${sec.exam.map(item=>`<li>${item}</li>`).join("")}</ul></div>`;}
+function renderSection(sec){return `${renderDeep(sec)}<div class="card"><h3 class="h3" style="margin-top:0">408 抓分点</h3><ul>${sec.exam.map(item=>`<li>${item}</li>`).join("")}</ul></div>`;}
 function render(){const id=currentId();const sec=CHAPTER.sections.find(s=>s.id===id);document.querySelectorAll(".toc-item").forEach(el=>el.classList.toggle("active",el.dataset.id===id));document.getElementById("crumb").innerHTML=`第 ${CHAPTER.num} 章 · ${CHAPTER.title} <span style="color:var(--ink-4);margin:0 8px">/</span> <b>${sec.num} ${sec.title}</b>`;document.getElementById("content").innerHTML=renderSection(sec);const idx=CHAPTER.sections.findIndex(s=>s.id===id);const prev=CHAPTER.sections[idx-1],next=CHAPTER.sections[idx+1];document.getElementById("prevTitle").textContent=prev?`${prev.num} ${prev.title}`:"已到开头";document.getElementById("nextTitle").textContent=next?`${next.num} ${next.title}`:"已到结尾";["prevBtn","prevBtn2"].forEach(btn=>{document.getElementById(btn).disabled=!prev;document.getElementById(btn).onclick=()=>prev&&goTo(prev.id);});["nextBtn","nextBtn2"].forEach(btn=>{document.getElementById(btn).disabled=!next;document.getElementById(btn).onclick=()=>next&&goTo(next.id);});}
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")return;const idx=CHAPTER.sections.findIndex(s=>s.id===currentId());if(e.key==="ArrowLeft"&&idx>0)goTo(CHAPTER.sections[idx-1].id);if(e.key==="ArrowRight"&&idx<CHAPTER.sections.length-1)goTo(CHAPTER.sections[idx+1].id);});
 window.addEventListener("hashchange",render);renderTOC();render();

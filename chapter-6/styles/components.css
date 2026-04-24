@@ -220,3 +220,48 @@
 }
 .toggle-row .tgl:hover{ border-color:var(--ink-2); }
 .toggle-row .tgl.active{ background:#18181B; color:#fff; border-color:#18181B; }
+
+.lesson-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:24px;
+  align-items:center;
+  margin:-8px 0 26px;
+  padding:28px;
+  border:1px solid rgba(24,20,15,.18);
+  background:linear-gradient(135deg, rgba(31,111,97,.12), transparent 42%), #fffdf8;
+  box-shadow:0 22px 70px rgba(37,27,15,.12);
+}
+.lesson-kicker{color:#1f6f61;font-family:var(--font-mono);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.lesson-title{margin:10px 0 16px;color:var(--ink);font-size:46px;line-height:1.08;letter-spacing:0}
+.lesson-thesis{margin:0;color:#3b332b;font-size:18px;line-height:1.9}
+.anchor-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 30px}
+.anchor-map article{padding:18px;border:1px solid var(--line);background:#fffdf8;border-top:5px solid #1f6f61}
+.anchor-map b{color:var(--ink);font-size:15px}
+.anchor-map p{margin:8px 0 0;color:#4c4339;line-height:1.78}
+.example-zone{margin:34px 0;padding:24px;border:1px solid rgba(24,20,15,.18);background:linear-gradient(135deg, rgba(31,111,97,.08), transparent 38%), #fffdf8}
+.zone-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.zone-head span{color:#1f6f61;font-family:var(--font-mono);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.zone-head h2{margin:0;font-size:28px;letter-spacing:0}
+.exam-deep{display:grid;grid-template-columns:58px minmax(0,1fr);gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.exam-deep:last-child{border-bottom:none;padding-bottom:0}
+.exam-num{width:48px;height:48px;display:grid;place-items:center;color:#fff;background:#17140f;font-family:var(--font-mono);font-weight:900;box-shadow:6px 6px 0 rgba(31,111,97,.16)}
+.exam-deep h3{margin:0 0 8px;color:var(--ink);font-size:18px}
+.exam-deep p{margin:0 0 10px}
+.exam-deep .question{color:#3b332b;font-weight:700}
+.exam-deep .question::before{content:"题：";color:#1f6f61}
+.exam-deep .answer{color:#3f4a40;line-height:1.85}
+.exam-deep .answer::before{content:"解：";color:#1f6f61;font-weight:900}
+.exam-deep .trap{margin:0;padding:10px 12px;color:#5b3b25;background:#fff4d7;border:1px solid #ead19a}
+.bus-visual{min-height:250px;display:grid;align-content:center;gap:12px;padding:18px;border:1px solid rgba(24,20,15,.18);background:#fffdf8}
+.bus-visual b{padding:14px;color:#fff;background:#17140f;text-align:center}
+.bus-visual span{height:6px;background:#1f6f61;box-shadow:0 0 0 4px rgba(31,111,97,.12)}
+.bus-visual p{margin:0;color:#4c4339;text-align:center}
+.bus-visual.timing{grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr;align-items:center}
+.bus-visual.timing span{height:3px}
+.bus-visual.summary{grid-template-columns:1fr 1fr}
+.bus-visual.summary b:nth-child(2n){background:#1f6f61}
+@media (max-width:900px){
+  .lesson-hero,.anchor-map,.bus-visual.timing,.bus-visual.summary{grid-template-columns:1fr}
+  .lesson-title{font-size:38px}
+}
