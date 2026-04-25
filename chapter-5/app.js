@@ -1,5 +1,6 @@
 // ============ 站点主逻辑 ============
 const SECTIONS = [
+  { id:"5-talk", num:"导读", title:"本章串讲", subs:["第五章中央处理器串讲"] },
   { id:"5-1", num:"5.1", title:"CPU 的功能和基本结构", subs:["5.1.1 CPU的功能","5.1.2 CPU的基本结构","5.1.3 CPU的寄存器"] },
   { id:"5-2", num:"5.2", title:"指令执行过程", subs:["5.2.1 指令周期","5.2.2 指令周期的数据流","5.2.3 指令执行方案"] },
   { id:"5-3", num:"5.3", title:"数据通路", subs:["5.3.1 数据通路的功能","5.3.2 数据通路的组成","5.3.3 数据通路的基本结构","5.3.4 数据通路的操作举例"] },
@@ -50,7 +51,9 @@ function render(){
 
   const content = document.getElementById("content");
   const renderer = window["SEC_" + id.replace("-","_")];
-  if(renderer){
+  if(id === "5-talk"){
+    content.innerHTML = window.renderChapterTalk ? window.renderChapterTalk("5") : `<div class="card">本章串讲内容加载中...</div>`;
+  } else if(renderer){
     content.innerHTML = renderer();
     // 运行节内初始化
     const init = window["INIT_" + id.replace("-","_")];

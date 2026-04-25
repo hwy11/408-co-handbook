@@ -1248,3 +1248,30 @@
   .lesson-title{font-size:38px}
   .compare-lab{grid-template-columns:1fr}
 }
+
+/* =================== 本章串讲 =================== */
+.talk-hero{
+  position:relative; overflow:hidden; border-radius:26px; padding:44px;
+  background:radial-gradient(circle at 16% 0%, rgba(217,119,6,.24), transparent 34%), linear-gradient(135deg,#1c1917,#78350f);
+  color:#fff; margin:0 0 24px; box-shadow:0 24px 70px rgba(15,23,42,.18);
+}
+.talk-hero::after{content:"";position:absolute;right:-80px;top:-80px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(255,255,255,.18)}
+.talk-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#fde68a;font-weight:800;margin-bottom:14px}
+.talk-hero h1{margin:0 0 18px;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.04em;max-width:880px}
+.talk-hero p{margin:0;color:rgba(255,255,255,.82);font-size:18px;line-height:1.9;max-width:840px}
+.talk-map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:24px 0}
+.talk-map div{min-height:96px;border:1px solid var(--line);border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,var(--bg-sunken))}
+.talk-map span{display:block;font-family:var(--font-mono);font-size:12px;color:#b45309;margin-bottom:12px;font-weight:700}
+.talk-map b{color:var(--ink);font-size:15px}
+.talk-thread{display:grid;gap:14px;margin:28px 0}
+.talk-thread article{display:grid;grid-template-columns:54px 1fr;gap:18px;padding:24px;border:1px solid var(--line);border-radius:18px;background:#fff;animation:riseIn .45s ease both}
+.talk-thread article:nth-child(2n){background:#fffbeb}
+.talk-step{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#1c1917;color:#fff;font-family:var(--font-mono);font-size:13px;font-weight:800}
+.talk-thread p{margin:0;color:var(--ink);line-height:1.95;font-size:17px}
+.talk-thread strong{color:#92400e;background:linear-gradient(transparent 58%,rgba(245,158,11,.2) 58%);padding:0 2px}
+.talk-drills{margin:32px 0;padding:24px;border-radius:20px;background:#1c1917;color:#fff}
+.talk-drill-head{color:#fde68a;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:14px}
+.talk-drills article{border-top:1px solid rgba(255,255,255,.14);padding:16px 0 0;margin-top:16px}
+.talk-drills h3{margin:0 0 8px;color:#fff;font-size:17px}
+.talk-drills p{margin:0;color:rgba(255,255,255,.76)}
+@media (max-width:900px){.talk-map{grid-template-columns:repeat(2,minmax(0,1fr))}.talk-thread article{grid-template-columns:1fr}.talk-hero{padding:30px 24px}}

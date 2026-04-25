@@ -519,3 +519,143 @@ pre .cmt { color: #71717a; font-style: italic; }
   50% { box-shadow: 0 0 0 6px rgba(194,65,12,0); }
 }
 .pulse { animation: pulse 1.5s infinite; }
+
+/* ============ 本章串讲 ============ */
+.talk-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(234,88,12,.18), transparent 30%),
+    linear-gradient(135deg, #111113 0%, #292524 100%);
+  color: #fff;
+  border-radius: 24px;
+  padding: 42px;
+  margin: 0 0 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.16);
+}
+.talk-hero::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 999px;
+}
+.talk-eyebrow {
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fed7aa;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.talk-hero h1 {
+  margin: 0 0 18px;
+  font-size: clamp(30px, 5vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -.04em;
+  max-width: 860px;
+}
+.talk-hero p {
+  color: rgba(255,255,255,.82);
+  font-size: 18px;
+  line-height: 1.9;
+  max-width: 820px;
+  margin: 0;
+}
+.talk-map {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 24px 0;
+}
+.talk-map div {
+  min-height: 96px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  background: linear-gradient(180deg, #fff, #fafafa);
+}
+.talk-map span {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.talk-map b { color: var(--text); font-size: 15px; }
+.talk-thread {
+  display: grid;
+  gap: 14px;
+  margin: 28px 0;
+}
+.talk-thread article {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #fff;
+  animation: fadeSlide .45s ease both;
+}
+.talk-thread article:nth-child(2n) { background: #fffaf7; }
+.talk-step {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #111113;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+}
+.talk-thread p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.95;
+  font-size: 17px;
+}
+.talk-thread strong {
+  color: #9a3412;
+  background: linear-gradient(transparent 58%, rgba(234,88,12,.18) 58%);
+  padding: 0 2px;
+}
+.talk-drills {
+  margin: 32px 0;
+  padding: 24px;
+  border-radius: 20px;
+  background: #111113;
+  color: #fff;
+}
+.talk-drill-head {
+  color: #fed7aa;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.talk-drills article {
+  border-top: 1px solid rgba(255,255,255,.14);
+  padding: 16px 0 0;
+  margin-top: 16px;
+}
+.talk-drills h3 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 17px;
+}
+.talk-drills p {
+  color: rgba(255,255,255,.76);
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .talk-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .talk-thread article { grid-template-columns: 1fr; }
+  .talk-hero { padding: 30px 24px; }
+}

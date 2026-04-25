@@ -5,6 +5,7 @@ const NAV = [
   {
     title: "第二章 数据的表示和运算",
     items: [
+      { id: "s-2-talk", label: "本章串讲", section: "talk", num: "导读" },
       { id: "s-2-1", label: "2.1 数制与编码", section: "2.1" },
       { id: "s-2-1-1", label: "2.1.1 进位计数制及其相互转换", section: "2.1", sub: true },
       { id: "s-2-1-2", label: "2.1.2 定点数的编码表示", section: "2.1", sub: true },
@@ -27,8 +28,14 @@ const NAV = [
 ];
 
 function App() {
+  const sectionOrder = ["talk", "2.1", "2.2", "2.3"];
   // 持久化当前节
-  const [active, setActive] = useState(() => localStorage.getItem("cs408-active") || "2.1");
+  const [active, setActive] = useState(() => {
+    const hash = location.hash.replace("#", "");
+    if (sectionOrder.includes(hash)) return hash;
+    const saved = localStorage.getItem("cs408-active");
+    return sectionOrder.includes(saved) ? saved : "talk";
+  });
   const [scrollTo, setScrollTo] = useState(null);
 
   useEffect(() => {
@@ -46,6 +53,7 @@ function App() {
   }, [scrollTo, active]);
 
   const handleNav = (item) => {
+    location.hash = item.section;
     if (item.section !== active) {
       setActive(item.section);
       // 等待下一帧再滚动
@@ -63,6 +71,7 @@ function App() {
 
   // 切换节时滚到顶部
   const switchSection = (sec) => {
+    location.hash = sec;
     setActive(sec);
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 0);
   };
@@ -87,7 +96,7 @@ function App() {
                   style={item.sub ? { paddingLeft: 28, fontSize: 13, color: "var(--text-3)" } : {}}
                   onClick={() => handleNav(item)}
                 >
-                  {!item.sub && <span className="num">{item.section}</span>}
+                  {!item.sub && <span className="num">{item.num || item.section}</span>}
                   {item.sub ? item.label.replace(/^\d+\.\d+\.\d+\s*/, "") : item.label.replace(/^\d+\.\d+\s*/, "")}
                 </a>
               );
@@ -103,19 +112,20 @@ function App() {
 
       {/* 主内容 */}
       <main className="content">
+        {active === "talk" && <ChapterTalk chapter="2" />}
         {active === "2.1" && <Section2_1 />}
         {active === "2.2" && <Section2_2 />}
         {active === "2.3" && <Section2_3 />}
 
         {/* 底部导航 */}
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 80, paddingTop: 32, borderTop: "1px solid var(--border)" }}>
-          {active !== "2.1" ? (
-            <button className="btn" onClick={() => switchSection(active === "2.3" ? "2.2" : "2.1")}>
+          {sectionOrder.indexOf(active) > 0 ? (
+            <button className="btn" onClick={() => switchSection(sectionOrder[sectionOrder.indexOf(active) - 1])}>
               ← 上一节
             </button>
           ) : <div />}
-          {active !== "2.3" && (
-            <button className="btn primary" onClick={() => switchSection(active === "2.1" ? "2.2" : "2.3")}>
+          {sectionOrder.indexOf(active) < sectionOrder.length - 1 && (
+            <button className="btn primary" onClick={() => switchSection(sectionOrder[sectionOrder.indexOf(active) + 1])}>
               下一节 →
             </button>
           )}
@@ -123,6 +133,11 @@ function App() {
       </main>
     </div>
   );
+}
+
+function ChapterTalk({ chapter }) {
+  const html = window.renderChapterTalk ? window.renderChapterTalk(chapter) : "<div class='card'>本章串讲内容加载中...</div>";
+  return <div className="fade-in" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);

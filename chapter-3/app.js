@@ -3,6 +3,7 @@ const CHAPTER = {
   title: "存储系统",
   mark: "MEM",
   sections: [
+    { id: "3-talk", num: "导读", title: "本章串讲", subs: ["第三章存储系统串讲"], lead: "", blocks: [], exam: [] },
     {
       id: "3-1",
       num: "3.1",
@@ -523,6 +524,7 @@ function goTo(id) {
 }
 
 function renderSection(sec) {
+  if (sec.id === "3-talk") return window.renderChapterTalk ? window.renderChapterTalk("3") : `<div class="card">本章串讲内容加载中...</div>`;
   if (sec.id === "3-2") return renderMainMemorySection(sec);
   if (DEEP[sec.id]) return renderDeepSection(sec, DEEP[sec.id]);
   return `

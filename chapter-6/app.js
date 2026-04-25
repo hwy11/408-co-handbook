@@ -2,6 +2,7 @@ const CHAPTER = {
   num: "6",
   title: "总线",
   sections: [
+    { id: "6-talk", num: "导读", title: "本章串讲", subs: ["第六章总线串讲"], lead: "", blocks: [], exam: [] },
     {
       id: "6-1",
       num: "6.1",
@@ -169,7 +170,7 @@ function renderVisual(type) {
 function renderTOC(){const toc=document.getElementById("toc");toc.innerHTML=`<div class="toc-group"><div class="toc-group-title">第 ${CHAPTER.num} 章 · ${CHAPTER.title}</div>${CHAPTER.sections.map(s=>`<div class="toc-item" data-id="${s.id}"><span class="toc-num">${s.num}</span><span>${s.title}</span></div>`).join("")}</div>`;toc.querySelectorAll(".toc-item").forEach(el=>el.addEventListener("click",()=>goTo(el.dataset.id)));}
 function currentId(){const hash=location.hash.replace("#","");return CHAPTER.sections.some(s=>s.id===hash)?hash:(localStorage.getItem(`chapter-${CHAPTER.num}-section`)||CHAPTER.sections[0].id);}
 function goTo(id){location.hash=id;localStorage.setItem(`chapter-${CHAPTER.num}-section`,id);render();window.scrollTo({top:0,behavior:"instant"});}
-function renderSection(sec){return `${renderDeep(sec)}<div class="card"><h3 class="h3" style="margin-top:0">408 抓分点</h3><ul>${sec.exam.map(item=>`<li>${item}</li>`).join("")}</ul></div>`;}
+function renderSection(sec){if(sec.id==="6-talk")return window.renderChapterTalk?window.renderChapterTalk("6"):`<div class="card">本章串讲内容加载中...</div>`;return `${renderDeep(sec)}<div class="card"><h3 class="h3" style="margin-top:0">408 抓分点</h3><ul>${sec.exam.map(item=>`<li>${item}</li>`).join("")}</ul></div>`;}
 function render(){const id=currentId();const sec=CHAPTER.sections.find(s=>s.id===id);document.querySelectorAll(".toc-item").forEach(el=>el.classList.toggle("active",el.dataset.id===id));document.getElementById("crumb").innerHTML=`第 ${CHAPTER.num} 章 · ${CHAPTER.title} <span style="color:var(--ink-4);margin:0 8px">/</span> <b>${sec.num} ${sec.title}</b>`;document.getElementById("content").innerHTML=renderSection(sec);const idx=CHAPTER.sections.findIndex(s=>s.id===id);const prev=CHAPTER.sections[idx-1],next=CHAPTER.sections[idx+1];document.getElementById("prevTitle").textContent=prev?`${prev.num} ${prev.title}`:"已到开头";document.getElementById("nextTitle").textContent=next?`${next.num} ${next.title}`:"已到结尾";["prevBtn","prevBtn2"].forEach(btn=>{document.getElementById(btn).disabled=!prev;document.getElementById(btn).onclick=()=>prev&&goTo(prev.id);});["nextBtn","nextBtn2"].forEach(btn=>{document.getElementById(btn).disabled=!next;document.getElementById(btn).onclick=()=>next&&goTo(next.id);});}
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")return;const idx=CHAPTER.sections.findIndex(s=>s.id===currentId());if(e.key==="ArrowLeft"&&idx>0)goTo(CHAPTER.sections[idx-1].id);if(e.key==="ArrowRight"&&idx<CHAPTER.sections.length-1)goTo(CHAPTER.sections[idx+1].id);});
 window.addEventListener("hashchange",render);renderTOC();render();
