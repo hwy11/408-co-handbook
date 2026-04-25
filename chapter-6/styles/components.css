@@ -245,6 +245,13 @@
 .talk-drills h3{margin:0 0 8px;color:#fff;font-size:17px}
 .talk-drills p{margin:0;color:rgba(255,255,255,.76)}
 @media (max-width:900px){.talk-map{grid-template-columns:repeat(2,minmax(0,1fr))}.talk-thread article{grid-template-columns:1fr}.talk-hero{padding:30px 24px}}
+.talk-hero-flow{margin-bottom:0;border-radius:28px 28px 0 0}
+.talk-flow{padding:42px 48px 52px;background:linear-gradient(180deg,#fff,#f0fdfa);border:1px solid var(--line);border-top:none;border-radius:0 0 28px 28px;box-shadow:0 22px 70px rgba(15,23,42,.1)}
+.talk-flow p{max-width:880px;margin:0 auto 24px;color:var(--ink);font-size:18px;line-height:2.08;letter-spacing:.01em}
+.talk-flow p:first-child::first-letter{float:left;font-size:64px;line-height:.86;padding:10px 12px 0 0;color:#0e7490;font-weight:900}
+.talk-flow p:last-child{margin-bottom:0}
+.talk-flow strong{color:#0e7490;font-weight:800;background:linear-gradient(transparent 58%,rgba(6,182,212,.18) 58%);padding:0 2px}
+@media (max-width:900px){.talk-flow{padding:28px 22px 34px}.talk-flow p{font-size:16.5px;line-height:1.95}}
 .toggle-row .tgl:hover{ border-color:var(--ink-2); }
 .toggle-row .tgl.active{ background:#18181B; color:#fff; border-color:#18181B; }
 
